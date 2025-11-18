@@ -7,12 +7,12 @@ const path = require('path');
 const fs = require('fs');         
 
 const app = express();
-// En la nube, Railway nos da un puerto especial en process.env.PORT
 const PUERTO = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
+// CARPETAS PÚBLICAS
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/Tacos', express.static(path.join(__dirname, '../Tacos')));
 app.use('/PlatillosFuertes', express.static(path.join(__dirname, '../PlatillosFuertes')));
@@ -20,7 +20,10 @@ app.use('/Antojitos', express.static(path.join(__dirname, '../Antojitos')));
 app.use('/Postres', express.static(path.join(__dirname, '../Postres')));
 app.use('/Bebidas', express.static(path.join(__dirname, '../Bebidas')));
 
-// CONEXIÓN A LA BASE DE DATOS (Adaptada para la Nube)
+// Sirve los archivos HTML, CSS y JS de la carpeta principal
+app.use(express.static(path.join(__dirname, '../')));
+
+// CONEXIÓN A BASE DE DATOS (¡CORREGIDO A POOL!)
 const db = mysql.createPool({
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
@@ -34,7 +37,6 @@ const db = mysql.createPool({
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        // En la nube, aseguramos que la carpeta exista
         const dir = 'uploads/perfiles/';
         if (!fs.existsSync(dir)){
             fs.mkdirSync(dir, { recursive: true });
@@ -48,19 +50,18 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// --- RUTAS NORMALES ---
+// --- RUTAS ---
 
 app.get('/productos', async (req, res) => {
     try {
         const [productos] = await db.query("SELECT * FROM Productos");
-        // En la nube, usamos la URL del sitio real
         const baseUrl = `${req.protocol}://${req.get('host')}`;
         const productosConUrl = productos.map(prod => {
             const rutaLimpia = prod.imagen_url.replace(/\\/g, "/").replace('Platillos Fuertes', 'PlatillosFuertes');
             return { ...prod, imagen_url: `${baseUrl}/${rutaLimpia}` };
         });
         res.status(200).json(productosConUrl);
-    } catch (error) { res.status(500).json({ mensaje: 'Error al cargar menú.' }); }
+    } catch (error) { res.status(500).json({ mensaje: 'Error menú.' }); }
 });
 
 app.post('/registrar', async (req, res) => {
@@ -70,7 +71,7 @@ app.post('/registrar', async (req, res) => {
         const hash = await bcrypt.hash(contrasena, salt);
         await db.query("INSERT INTO Usuarios (nombre_completo, email, contrasena_hash, telefono) VALUES (?, ?, ?, ?)", [nombre, email, hash, telefono || null]);
         res.status(201).json({ mensaje: 'Registrado' });
-    } catch (error) { res.status(500).json({ mensaje: 'Error o correo duplicado.' }); }
+    } catch (error) { res.status(500).json({ mensaje: 'Error registro.' }); }
 });
 
 app.post('/login', async (req, res) => {
@@ -95,7 +96,7 @@ app.post('/login', async (req, res) => {
             profilePic: fotoUrl || `${baseUrl}/imagenes/perfil-default.png`
         };
         res.status(200).json({ mensaje: 'Login OK', usuario: datosUsuario });
-    } catch (error) { res.status(500).json({ mensaje: 'Error interno.' }); }
+    } catch (error) { res.status(500).json({ mensaje: 'Error login.' }); }
 });
 
 app.post('/crear-pedido', async (req, res) => {
@@ -144,18 +145,15 @@ app.post('/subir-foto', upload.single('fotoPerfil'), async (req, res) => {
     } catch (error) { res.status(500).json({ mensaje: 'Error foto.' }); }
 });
 
-// ==========================================
-// RUTA SECRETA PARA LLENAR BASE DE DATOS
-// ==========================================
+// RUTA SECRETA
 app.get('/setup-menu', async (req, res) => {
     try {
-        // Crear tablas si no existen (ideal para Railway)
         await db.query(`CREATE TABLE IF NOT EXISTS Usuarios (id_usuario INT AUTO_INCREMENT PRIMARY KEY, nombre_completo VARCHAR(100), email VARCHAR(100) UNIQUE, contrasena_hash VARCHAR(255), direccion TEXT, telefono VARCHAR(20), foto_perfil_url VARCHAR(255), fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP)`);
         await db.query(`CREATE TABLE IF NOT EXISTS Productos (id_producto VARCHAR(10) PRIMARY KEY, nombre VARCHAR(100), descripcion TEXT, precio DECIMAL(10, 2), categoria VARCHAR(50), imagen_url VARCHAR(255), emoji VARCHAR(10))`);
         await db.query(`CREATE TABLE IF NOT EXISTS Pedidos (id_pedido INT AUTO_INCREMENT PRIMARY KEY, id_usuario INT, fecha_pedido DATETIME DEFAULT CURRENT_TIMESTAMP, total_pedido DECIMAL(10, 2), estado VARCHAR(50), FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario))`);
         await db.query(`CREATE TABLE IF NOT EXISTS Detalles_Pedido (id_detalle INT AUTO_INCREMENT PRIMARY KEY, id_pedido INT, id_producto VARCHAR(10), cantidad INT, precio_unitario DECIMAL(10, 2), FOREIGN KEY (id_pedido) REFERENCES Pedidos(id_pedido))`);
-
-        // Borrar datos viejos
+        
+        // (Si ya tienes datos, puedes borrar esta parte del DELETE)
         await db.query("DELETE FROM Detalles_Pedido");
         await db.query("DELETE FROM Productos");
 
@@ -240,10 +238,8 @@ app.get('/setup-menu', async (req, res) => {
         const sql = `INSERT INTO Productos (id_producto, nombre, descripcion, precio, categoria, imagen_url, emoji) VALUES ?`;
         await db.query(sql, [valores]);
 
-        res.send("<h1>¡ÉXITO! 🎉</h1><p>Base de datos poblada. <a href='/'>Volver</a></p>");
-    } catch (error) {
-        res.status(500).send(`<h1>ERROR ❌</h1><p>${error.message}</p>`);
-    }
+        res.send("<h1>¡ÉXITO! 🎉</h1><p>Base de datos poblada.</p>");
+    } catch (error) { res.status(500).send(error.message); }
 });
 
 app.listen(PUERTO, () => {
