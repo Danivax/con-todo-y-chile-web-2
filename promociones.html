@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promociones - Con Todo y Chile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🌶️</div>
+                <h1>Con Todo y Chile</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Con todo y chile 2.html">Inicio</a></li> 
+                    <li><a href="promociones.html">Promociones</a></li>
+                    <li><a id="nosotrosLink">Nosotros</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <button id="darkModeBtn">🌙 Modo Oscuro</button>
+                <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
+                    <a href="perfil.html" class="profile-link">
+                        <img src="imagenes/perfil-default.png" alt="Mi Cuenta" id="navProfilePic">
+                        <span id="navUserName"></span>
+                    </a>
+                    <button id="logoutBtn">Cerrar Sesión</button>
+                </div>
+                <button id="loginBtn">Iniciar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">🔥 Nuestras Promociones</h2>
+        <div class="promotions-grid">
+            <div class="promotion-item">
+                <div class="promotion-img">🎉</div>
+                <h3 class="promotion-title">2x1 en Tacos</h3>
+                <p class="promotion-desc">Llévate el doble de tacos al mismo precio.</p>
+                <div class="promotion-price">¡Solo hoy!</div>
+            </div>
+            <div class="promotion-item">
+                <div class="promotion-img">🍱</div>
+                <h3 class="promotion-title">Combo Familiar</h3>
+                <p class="promotion-desc">4 platillos fuertes + 2 bebidas grandes.</p>
+                <div class="promotion-price">$299</div>
+            </div>
+            <div class="promotion-item">
+                <div class="promotion-img">🥤</div>
+                <h3 class="promotion-title">Bebida Gratis</h3>
+                <p class="promotion-desc">En compras mayores a $150.</p>
+                <div class="promotion-price">¡Aprovecha!</div>
+            </div>
+            <div class="promotion-item">
+                <div class="promotion-img">🌯</div>
+                <h3 class="promotion-title">Burritos 20% OFF</h3>
+                <p class="promotion-desc">Todos los burritos con descuento.</p>
+                <div class="promotion-price">Hasta agotar existencias</div>
+            </div>
+            <div class="promotion-item">
+                <div class="promotion-img">🍮</div>
+                <h3 class="promotion-title">Postre + Café</h3>
+                <p class="promotion-desc">Postre y café por solo $50.</p>
+                <div class="promotion-price">$50</div>
+            </div>
+            <div class="promotion-item">
+                <div class="promotion-img">🌶️</div>
+                <h3 class="promotion-title">Picante Challenge</h3>
+                <p class="promotion-desc">Termina nuestro platillo más picante y llévate tu comida gratis.</p>
+                <div class="promotion-price">¿Te atreves?</div>
+            </div>
+            <div class="promotion-item">
+                <div class="promotion-img">🎂</div>
+                <h3 class="promotion-title">Cumpleaños Feliz</h3>
+                <p class="promotion-desc">Postre gratis en tu cumpleaños (muestra tu ID).</p>
+                <div class="promotion-price">¡Feliz cumple!</div>
+            </div>
+        </div>
+        <div style="text-align: center;">
+            <a href="Con todo y chile 2.html" class="back-btn">Volver al Menú</a>
+        </div>
+    </div>
+
+    <div class="modal" id="nosotrosModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sobre Nosotros</h3>
+                <button class="close-modal" id="closeNosotrosModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Creado por Daniel Vazquez Coto y Guillermo Lopez Jaime</strong></p>
+                <p>Proyecto Creado para La Materia de Ingenieria en Software</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content login-modal">
+            <button class="close-modal" id="closeLoginModal">&times;</button>
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-form="loginForm">Iniciar Sesión</button>
+                <button class="tab-btn" data-form="registerForm">Registrarse</button>
+            </div>
+            <div class="form-content active" id="loginForm">
+                <div class="modal-header">
+                    <h3>Iniciar Sesión</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="loginEmail">Correo Electrónico</label>
+                        <input type="email" id="loginEmail" placeholder="tu@correo.com">
+                    </div>
+                    <div class="input-group">
+                        <label for="loginPass">Contraseña</label>
+                        <input type="password" id="loginPass" placeholder="••••••••">
+                    </div>
+                    <button class="checkout-btn" id="loginSubmitBtn">Entrar</button>
+                </div>
+            </div>
+            <div class="form-content" id="registerForm">
+                <div class="modal-header">
+                    <h3>Crear Cuenta</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="regName">Nombre Completo</label>
+                        <input type="text" id="regName" placeholder="Tu Nombre">
+                    </div>
+                    <div class="input-group">
+                        <label for="regEmail">Correo Electrónico</label>
+                        <input type="email" id="regEmail" placeholder="tu@correo.com">
+                    </div>
+                    <div class="input-group">
+                        <label for="regTel">Teléfono (Opcional)</label>
+                        <input type="tel" id="regTel" placeholder="Ej. 4621234567">
+                    </div>
+                    <div class="input-group">
+                        <label for="regPass">Contraseña</label>
+                        <input type="password" id="regPass" placeholder="Crea una contraseña">
+                    </div>
+                    <button class="checkout-btn" id="registerSubmitBtn">Registrarse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Tu Pedido</h3>
+            <button class="close-cart" id="closeCartBtn">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="checkout-btn">Finalizar Pedido</button>
+        </div>
+    </div>
+
+    <div class="cart-icon" id="cartIcon">
+        🛒
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Con Todo y Chile</h3>
+                <p>Auténtico sabor mexicano con el toque picante que te encanta.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p>Teléfono: (555) 123-4567</p>
+                <p>Email: hola@contoyochile.com</p>
+            </div>
+           <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="social-icons">
+                    <a href="https://facebook.com/tu-restaurante" class="social-icon" target="_blank">
+                        <img src="¨Logos/Facebook.jpg" alt="Facebook">
+                    </a>
+                    <a href="https://twitter.com/tu-restaurante" class="social-icon" target="_blank">
+                        <img src="Logos/X.jpg" alt="Twitter">
+                    </a>
+                    <a href="https://instagram.com/tu-restaurante" class="social-icon" target="_blank">
+                        <img src="Logos/Instagram.jpg" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js" defer></script>
+</body>
+</html>

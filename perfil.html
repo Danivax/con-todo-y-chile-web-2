@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Con Todo y Chile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="profile-page"> <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">🌶️</div>
+                <h1>Con Todo y Chile</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Con todo y chile 2.html">Inicio</a></li> 
+                    <li><a href="promociones.html">Promociones</a></li>
+                    <li><a id="nosotrosLink">Nosotros</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <button id="darkModeBtn">🌙 Modo Oscuro</button>
+                <div class="user-profile-widget" id="userProfileWidget" style="display: none;">
+                    <a href="perfil.html" class="profile-link">
+                        <img src="imagenes/perfil-default.png" alt="Mi Cuenta" id="navProfilePic">
+                        <span id="navUserName"></span>
+                    </a>
+                    <button id="logoutBtn">Cerrar Sesión</button>
+                </div>
+                <button id="loginBtn">Iniciar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="profile-container">
+            
+            <aside class="profile-sidebar">
+                <div class="sidebar-profile-summary">
+                    <label for="profilePicInput" class="profile-pic-label" title="Haz clic para cambiar tu foto">
+                        <img src="imagenes/perfil-default.png" alt="Foto de Perfil" id="sidebarProfilePic">
+                    </label>
+                    <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
+                    <h3 id="sidebarProfileName">Nombre de Usuario</h3>
+                </div>
+                <nav class="profile-sidebar-nav">
+                    <button class="profile-nav-btn active" data-view="perfil-view">Mi Perfil</button>
+                    <button class="profile-nav-btn" data-view="pedidos-view">Historial de Pedidos</button>
+                    <button class="profile-nav-btn" data-view="editar-view">Editar Perfil</button>
+                    <button class="profile-nav-btn" id="sidebarLogoutBtn">Cerrar Sesión</button>
+                </nav>
+            </aside>
+            
+            <main class="profile-content">
+                
+                <div class="profile-content-view active" id="perfil-view">
+                    <h2 class="section-title">¡Bienvenido, <span id="welcomeProfileName">Usuario</span>!</h2>
+                    <div class="profile-card-large">
+                        <h3>Información de la Cuenta</h3>
+                        <p><strong>Nombre:</strong> <span id="profileName"></span></p>
+                        <p><strong>Correo:</strong> <span id="profileEmail"></span></p>
+                        <p><strong>Teléfono:</strong> <span id="profilePhone"></span></p>
+                        <p><strong>Dirección:</strong> <span id="profileAddress"></span></p>
+                        <button id="editProfileBtnNav" data-view="editar-view" class="back-btn">Editar Perfil</button>
+                    </div>
+                </div>
+
+                <div class="profile-content-view" id="pedidos-view">
+                    <h2 class="section-title">Historial de Pedidos</h2>
+                    <div class="order-history" id="orderHistoryContainer">
+                        </div>
+                </div>
+
+                <div class="profile-content-view" id="editar-view">
+                    <h2 class="section-title">Editar Perfil</h2>
+                    <div class="profile-edit-form">
+                        <h3>Editar Información</h3>
+                        <div class="input-group">
+                            <label for="editName">Nombre Completo</label>
+                            <input type="text" id="editName">
+                        </div>
+                        <div class="input-group">
+                            <label for="editEmail">Correo Electrónico</label>
+                            <input type="email" id="editEmail" disabled> 
+                        </div>
+                        <div class="input-group">
+                            <label for="editTel">Teléfono</label>
+                            <input type="tel" id="editTel">
+                        </div>
+                        <div class="input-group">
+                            <label for="editAddress">Dirección de Envío</label>
+                            <textarea id="editAddress" rows="3" placeholder="Ej. Av. Siempre Viva 123, Col. Centro"></textarea>
+                        </div>
+                        <button id="saveProfileBtn" class="checkout-btn">Guardar Cambios</button>
+                        <button id="cancelEditBtn" class="back-btn" style="background-color: var(--primary);">Cancelar</button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal" id="nosotrosModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sobre Nosotros</h3>
+                <button class="close-modal" id="closeNosotrosModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Creado por Daniel Vazquez Coto y Guillermo Lopez Jaime</strong></p>
+                <p>Proyecto Creado para La Materia de Ingenieria en Software</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="loginModal">
+        <div class="modal-content login-modal">
+            <button class="close-modal" id="closeLoginModal">&times;</button>
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-form="loginForm">Iniciar Sesión</button>
+                <button class="tab-btn" data-form="registerForm">Registrarse</button>
+            </div>
+            <div class="form-content active" id="loginForm">
+                <div class="modal-header">
+                    <h3>Iniciar Sesión</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="loginEmail">Correo Electrónico</label>
+                        <input type="email" id="loginEmail" placeholder="tu@correo.com">
+                    </div>
+                    <div class="input-group">
+                        <label for="loginPass">Contraseña</label>
+                        <input type="password" id="loginPass" placeholder="••••••••">
+                    </div>
+                    <button class="checkout-btn" id="loginSubmitBtn">Entrar</button>
+                </div>
+            </div>
+            <div class="form-content" id="registerForm">
+                <div class="modal-header">
+                    <h3>Crear Cuenta</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <label for="regName">Nombre Completo</label>
+                        <input type="text" id="regName" placeholder="Tu Nombre">
+                    </div>
+                    <div class="input-group">
+                        <label for="regEmail">Correo Electrónico</label>
+                        <input type="email" id="regEmail" placeholder="tu@correo.com">
+                    </div>
+                    <div class="input-group">
+                        <label for="regTel">Teléfono (Opcional)</label>
+                        <input type="tel" id="regTel" placeholder="Ej. 4621234567">
+                    </div>
+                    <div class="input-group">
+                        <label for="regPass">Contraseña</label>
+                        <input type="password" id="regPass" placeholder="Crea una contraseña">
+                    </div>
+                    <button class="checkout-btn" id="registerSubmitBtn">Registrarse</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Tu Pedido</h3>
+            <button class="close-cart" id="closeCartBtn">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="checkout-btn">Finalizar Pedido</button>
+        </div>
+    </div>
+
+    <div class="cart-icon" id="cartIcon">
+        🛒
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Con Todo y Chile</h3>
+                <p>Auténtico sabor mexicano con el toque picante que te encanta.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p>Teléfono: (555) 123-4567</p>
+                <p>Email: hola@contoyochile.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <div class="social-icons">
+                    <a href="https://facebook.com/tu-restaurante" class="social-icon" target="_blank">
+                        <img src="Logos/Facebook.jpg" alt="Facebook">
+                    </a>
+                    <a href="https://twitter.com/tu-restaurante" class="social-icon" target="_blank">
+                        <img src="Logos/X.jpg" alt="Twitter">
+                    </a>
+                    <a href="https://instagram.com/tu-restaurante" class="social-icon" target="_blank">
+                        <img src="Logos/Instagram.jpg" alt="Instagram">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js" defer></script>
+</body>
+</html>
